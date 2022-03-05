@@ -1,0 +1,2 @@
+#!/bin/sh
+date +%A%t%d_%m_%Y%n%H:%M >> ~/.local/etc/khrba.txt

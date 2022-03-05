@@ -1,0 +1,38 @@
+#!/bin/sh
+
+_usage() {
+	{
+		echo "Failed: $1"
+		echo
+		echo "force:\trepeats a command until it succeeds"
+		echo "Usage:\tforce sleep_time command"
+		echo
+		echo "Copyright (C) 2021 Karam Assany <karam.assany@disroot.org>"
+	} >&2
+	exit 1
+}
+
+_status() {
+	echo "force: $1 '$2'" >&2
+}
+
+[ "$#" -ge 2 ] || _usage "Too few arguments"
+
+SLP="$1"
+
+shift
+
+_sleep() {
+	sleep "$SLP" || _usage "sleep_time is invalid"
+}
+
+_sleep
+_status "Trying" "$@"
+
+until $@
+do
+	_sleep
+	_status "Retrying" "$@"
+done
+
+_status "Succeeded" "$@"
